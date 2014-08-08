@@ -6,6 +6,7 @@ from flask.ext.wtf import Form
 from wtforms import TextField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import Required, Email, Length
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.script import Shell
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -28,16 +29,23 @@ class LoginForm(Form):
 	submit = SubmitField('Log In')
 	remember_me = BooleanField('Keep me logged in')
 
+#Routes
 @app.route('/', methods=['GET', 'POST'])
 def login():
 	form = LoginForm()
 	if form.validate_on_submit():
-		session['email'] = form.email.data
-		return redirect(url_for('login'))		
+		if (form.email.data == 'test@mail.com') and (form.password.data == 'testtest'):
+			session['email'] = form.email.data
+			return redirect(url_for('home'))
+		else:
+			return redirect(url_for('login'))		
 	return render_template('login.html', form=form, email=session.get('email'))
 	#return jsonify({'ip': request.remote_addr}), 200
 
-#Routes	
+@app.route('/home')
+def home():
+	return render_template('home.html')
+	
 @app.errorhandler(404)
 def page_not_found(e):
 	return render_template('404.html'), 404
@@ -55,6 +63,12 @@ class User(db.Model):
 	
 	def __repr__(self):
 		return '<User %r>' % self.email
+
+#Adds shell context to manager
+def make_shell_context():
+	return dict(app=app, db=db, User=User)
+
+manager.add_command("shell", Shell(make_context=make_shell_context))
 	
 if __name__ == '__main__':
 	manager.run()

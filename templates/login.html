@@ -12,7 +12,7 @@
 	</div>
 	
 	<div class="container">
-		<form class="form-signin" role="form">
+		<form class="form-signin" role="form" method="post">
 			<h2 class="form-signin-heading text-center">Please log in</h2>
 			{% import "bootstrap/wtf.html" as wtf %}
 			{{ wtf.quick_form(form) }}
