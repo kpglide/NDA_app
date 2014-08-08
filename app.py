@@ -7,6 +7,7 @@ from wtforms import TextField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import Required, Email, Length
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Shell
+from flask.ext.migrate import Migrate, MigrateCommand
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -46,6 +47,10 @@ def login():
 def home():
 	return render_template('home.html')
 	
+@app.route('/nda')
+def nda():
+	return render_template('nda.html')
+	
 @app.errorhandler(404)
 def page_not_found(e):
 	return render_template('404.html'), 404
@@ -69,6 +74,10 @@ def make_shell_context():
 	return dict(app=app, db=db, User=User)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
+
+#Adds database migration command to manager
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand) 
 	
 if __name__ == '__main__':
 	manager.run()
