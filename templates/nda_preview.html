@@ -1,12 +1,37 @@
 {% extends "base.html" %}
 
+{% block styles %}
+{{ super() }}
+<link href="../static/nda_preview.css" rel="stylesheet">
+{% endblock styles %}
+
 {% block page_content %}
   <div class="jumbotron">
-		<h4>{{ user_email }} and {{ recipient_name }} at {{ recipient_email }} will receive the following message</h4>
+		<ul>
+			<li>
+				<h4>The message below includes instructions about how to complete our standard NDA.</h4>
+			</li>
+			<li>
+				<h4>Press Send to deliver the message to {{ recipient_name }} at {{ recipient_email }}. We will copy you at {{ user_email }}.</h4>
+			</li>
+		</ul>
   </div>
 	   
-	   <div class="jumbotron">
-    <h1>NDA Message</h1>
-        <p class="lead">NDA message</p>
-      </div>
+  <div id="nda_preview_message">
+    <h3 id="NDA_message_header">Message</h3>
+      <p class="email_head">RE: TSports NDA</p>
+      <p class="email_head">From: no-reply@TSportsLegal.com</p>
+      <p class="email_head">To: {{ recipient_email }}</p>
+      <p>Dear {{ recipient_name }}</p>
+      <p>Below is a link to TSports' standard mutual NDA.  Please click the link to go to the NDA page.  Follow the instructions there to sign the NDA.</p>
+      <ul>
+      	<li><a href="{{ url_for('nda', user_email=user_email) }}">View the NDA and instructions for signing it </a></li>
+      </ul>
+      <p>Thank you.</p>
+      <p>The TSports Team</p>
+
+  </div>
+  <div class="btn-div">
+  	<button class="btn btn-lg btn-primary btn-block">Send</button>
+  </div>
 {% endblock %}

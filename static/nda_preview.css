@@ -1,0 +1,32 @@
+#nda_preview_message {
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.jumbotron {
+	text-align: left;
+}
+
+#NDA_message_header {
+	text-align: center;
+}
+
+.email_head {
+	font-size: 125%;
+}
+
+.btn-div {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.btn-div {
+  float: left;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}

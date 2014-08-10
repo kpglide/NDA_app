@@ -8,6 +8,7 @@ from wtforms.validators import Required, Email, Length
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Shell
 from flask.ext.migrate import Migrate, MigrateCommand
+from flask.ext.mail import Mail
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,6 +21,14 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 manager = Manager(app)
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
+
+#Configure app to use Flask-Mail extension and Gmail for sending email
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+mail = Mail(app)
 
 #Forms
 class LoginForm(Form):
@@ -54,8 +63,8 @@ def login():
 def home():
 	return render_template('home.html')
 	
-@app.route('/nda', methods=['GET', 'POST'])
-def nda():
+@app.route('/create_nda', methods=['GET', 'POST'])
+def create_nda():
 	form = RecipientForm()
 	if form.validate_on_submit():
 		session['recipient first name'] = form.firstname.data
@@ -63,7 +72,11 @@ def nda():
 		session['recipient email'] = form.email.data
 		return redirect(url_for('nda_preview'))
 	else:
-		return render_template('nda.html', form=form)
+		return render_template('create_nda.html', form=form)
+
+@app.route('/nda/<user_email>')
+def nda(user_email):
+	return render_template('nda.html', user_email=user_email)
 	
 @app.route('/nda_preview')
 def nda_preview():
