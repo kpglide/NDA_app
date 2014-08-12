@@ -1,0 +1,28 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}T-Sports Legal Portal{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="../static/signin.css" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+	<div class="container">
+		<h1 class="text-center">Welcome to the T-Sports Legal Portal</h1>
+	</div>
+	
+	<div class="container">
+		<form class="form-signin" role="form" method="post">
+			<h2 class="form-signin-heading text-center">Please log in</h2>
+			{% import "bootstrap/wtf.html" as wtf %}
+			{{ wtf.quick_form(form) }}
+		</form>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+{% endblock %}
+

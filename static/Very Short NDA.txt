@@ -1,0 +1,27 @@
+﻿In order to evaluate and consider whether to enter into a business transaction (the "Purpose"), TSports, by itself and on behalf of its subsidiary companies, and the other party identified below agree as follows:
+
+1. The Effective Date of this agreement is the date this agreement is accepted by the party identified below.  
+
+2. A party (the "Discloser") may disclose to the other party (the "Recipient") Confidential Information, which is defined below.  
+
+3. "Confidential Information" means non-public information related to a party's business which the other party, considering the nature of the information and the circumstances related to its disclosure, should understand is to be treated as confidential.  However, "Confidential Information" does not include information that: (a) was known previously to the receiving party free of any obligation to keep it confidential; (b) is or becomes publicly available by means other than unauthorized disclosure by the receiving party or its Representatives (as defined below); (c) is developed by or on behalf of the receiving party independent of any Confidential Information received under this agreement; or (d)	is received from a third party without an associated duty of confidentiality.
+
+4.  A party may disclose the other's Confidential Information to the party's Representatives (defined below).  A party may also disclose Confidential Information when compelled to do so by law if it provides reasonable prior notice to the other party, unless a court orders that the other party not be given notice.  Except as stated above in this paragraph, neither party will disclose Confidential Information of the other party without the prior consent of the other party.  
+
+5.  Each party shall use the other's Confidential Information solely for the Purpose.  Each party shall use a reasonable degree of care to protect the other's Confidential Information from unauthorized use or disclosure.  Such degree of care shall not be less than the care used by such party to protect its own Confidential Information.
+
+6.  For the purposes of this agreement, "Representatives" means the affiliates of either party, or the respective directors, officers, employees, attorneys, accountants and independent contractors of either party or of its affiliates.  Each party will be responsible for any breach of this agreement by its respective Representatives, and each party shall require its Representatives to agree in writing to adhere to the requirements of this agreement pertaining to Confidential Information.
+
+7. Promptly following a written request from the disclosing party, the other party will return all the disclosing party's Confidential Information or will destroy all such Confidential Information.  
+
+8.  Neither this agreement, nor the disclosure of Confidential Information under this agreement, nor the ongoing discussions and correspondence by the parties concerning the Purpose or any other matter, will constitute or imply any promise or intention to make any purchase or use of products, facilities or services by either party or its affiliated companies or any commitment by either party or its affiliated companies with respect to any other present or future transaction.  If, in the future, the parties elect to enter into binding commitments relating to the Purpose or any other transaction, such commitments must be explicitly stated (if at all) in a subsequent separate written agreement executed by both parties.  This agreement does not create any agency or partnership relationship. This agreement is not assignable or transferable by either party without the prior written consent of the other party. 
+
+9.  Each party reserves ownership of all rights (including, but not limited to intellectual property rights) in and to its Confidential Information, and neither party acquires any intellectual property rights under this agreement except the limited rights necessary to use the Confidential Information for the Purpose. 
+
+10. Neither makes any representation or warranty (express or implied) as to the accuracy or completeness of any of its Confidential Information, and assumes full responsibility for all conclusions it may derive from the other's Confidential Information.  
+
+11. This agreement will be governed by the laws of the State of New York without regard to its conflict of laws principles. The exclusive venue for any dispute regarding this agreement shall be New York City, New York. 
+
+12.  Either party may terminate this agreement with thirty days prior written notice, but this agreement's provisions will survive as to Confidential Information that is disclosed before termination.  Unless the parties otherwise agree in writing, Recipient's duty to protect Confidential Information expires five years from disclosure. 
+
+13.	This agreement is the parties' entire agreement on this topic, superseding any prior or contemporaneous agreements. Any amendments must be in writing. The parties may execute this agreement in counterparts, which taken together will constitute one instrument. Failure to enforce any of provisions of this agreement will not constitute a waiver. 

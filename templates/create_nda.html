@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+	   
+	<div class="container">
+		<div class ="jumbotron">
+			<h2 class="text-center">Create a NDA</h2>
+		</div>
+		<div class="form-group" role="form" method="post">
+			<h4 class="form-heading text-center">Please Enter the Other Party's Contact Information</h4>
+			{% import "bootstrap/wtf.html" as wtf %}
+			{{ wtf.quick_form(form) }}
+		</div>
+    </div> <!-- /container -->
+ 
+{% endblock %}
