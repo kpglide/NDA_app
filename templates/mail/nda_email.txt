@@ -1,0 +1,9 @@
+	<div class="message">
+	  <p>Dear {{ recipient_name }}</p>
+      <p>Below is a link to TSports' standard mutual NDA.  Please click the link to go to the NDA page.  Follow the instructions there to sign the NDA.</p>
+      <ul>
+      	<li><a href="{{ url_for('nda', user_email=user_email) }}">View the NDA and instructions for signing it </a></li>
+      </ul>
+      <p>Thank you,</p>
+      <p>The TSports Team</p>
+	</div>

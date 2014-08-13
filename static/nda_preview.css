@@ -1,14 +1,20 @@
-#nda_preview_message {
-  border-top: 1px solid #e5e5e5;
+.nda_preview_message_head {
   border-bottom: 1px solid #e5e5e5;
+  border-top: 1px solid #e5e5e5;
 }
 
 .jumbotron {
 	text-align: left;
 }
 
-#NDA_message_header {
+#message {
 	text-align: center;
+}
+
+.message {
+	border-bottom: 1px solid #e5e5e5;
+	padding-top: 15px;
+	font-size: 110%;
 }
 
 .email_head {
