@@ -191,7 +191,7 @@ def nda_confirmation():
 	recipient_name = recipient_first_name + ' ' + recipient_last_name
 	recipient_email = session.get('recipient email')
 	
-	send_nda_email(recipient_email, 'TSports NDA for Signature', 'mail/nda_email', user_email=user_email) 
+	send_nda_email(recipient_email, 'TSports NDA for Signature', 'mail/nda_email', recipient_name=recipient_name) 
 	
 	return '<h1>Thanks!</h>'
 	
