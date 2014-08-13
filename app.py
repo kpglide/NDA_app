@@ -28,7 +28,6 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-app.config['MAIL_SUBJECT_PREFIX'] = '[TSports]'
 app.config['MAIL_SENDER'] = 'TSports Legal Portal Admin <kpglide@gmail.com>'
 mail = Mail(app)
 
@@ -177,21 +176,20 @@ def nda_preview():
 							
 #Emails copy of blank NDA to recipient.  Also sends a copy to the app user. 
 def send_nda_email(to, subject, template, **kwargs):
-	msg = Message(app.config['MAIL_SUBJECT_PREFIX'] + subject,
-					sender=app.config['MAIL_SENDER'], recipients=[to])
+	msg = Message(subject, sender=app.config['MAIL_SENDER'], recipients=[to])
 	msg.body = render_template(template + '.txt', **kwargs)
 	msg.html = render_template(template + '.html', **kwargs)
 	mail.send(msg)
 
-@app.route('/nda_confirmation')
-def nda_confirmation():
-	user_email = session.get('email')
+@app.route('/nda_confirmation/<user_email>')
+def nda_confirmation(user_email):
+	user_email = user_email
 	recipient_first_name = session.get('recipient first name')
 	recipient_last_name = session.get('recipient last name')
 	recipient_name = recipient_first_name + ' ' + recipient_last_name
 	recipient_email = session.get('recipient email')
 	
-	send_nda_email(recipient_email, 'TSports NDA for Signature', 'mail/nda_email', recipient_name=recipient_name) 
+	send_nda_email(recipient_email, 'TSports NDA for Signature', 'mail/nda_email', recipient_name=recipient_name, user_email=user_email) 
 	
 	return '<h1>Thanks!</h>'
 	

@@ -36,6 +36,6 @@
 	</div>
 	
 	<div class="btn-div">
-		<a href="{{ url_for('nda_confirmation') }}"><button class="btn btn-lg btn-primary btn-block">Send</button></a>
+		<a href="{{ url_for('nda_confirmation', user_email=user_email) }}"><button class="btn btn-lg btn-primary btn-block">Send</button></a>
 	</div>
 {% endblock %}
