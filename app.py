@@ -150,15 +150,22 @@ def create_nda():
 	else:
 		return render_template('create_nda.html', form=form)
 
-@app.route('/nda/<user_email>')
+@app.route('/nda/<user_email>', methods=['GET', 'POST'])
 def nda(user_email):
 	f = open('static/Very Short NDA.txt', 'r')
 	data = f.read().decode('utf-8') 
 	paragraphs = data.split("\n\n")
 	f.close()
 	form = SignatoryForm()
+	signatory_email = form.email.data
+	user_email = user_email
+	signatory_name = form.signatory_name.data
 	if form.validate_on_submit():
-		pass
+		send_nda_email(signatory_email, 
+						'Signed NDA from ' + signatory_name, 
+						'mail/signed_nda', signatory_name=signatory_name, 
+						user_email=user_email) 
+		return redirect(url_for('thanks_for_signing'))
 	return render_template('nda.html', user_email=user_email, paragraphs=paragraphs, form=form)
 	
 @app.route('/nda_preview')
@@ -189,10 +196,28 @@ def nda_confirmation(user_email):
 	recipient_name = recipient_first_name + ' ' + recipient_last_name
 	recipient_email = session.get('recipient email')
 	
-	send_nda_email(recipient_email, 'TSports NDA for Signature', 'mail/nda_email', recipient_name=recipient_name, user_email=user_email) 
+	send_nda_email(recipient_email, 'TSports NDA for Signature', 'mail/nda_email',
+					 recipient_name=recipient_name, 
+					 user_email=user_email) 
 	
-	return '<h1>Thanks!</h>'
+	return redirect(url_for('nda_send_confirmation'))
 	
+@app.route('/nda_send_confirmation')
+def nda_send_confirmation():
+	user_email = session.get('email')
+	recipient_first_name = session.get('recipient first name')
+	recipient_last_name = session.get('recipient last name')
+	recipient_name = recipient_first_name + ' ' + recipient_last_name
+	recipient_email = session.get('recipient email')
+	return render_template('nda_send_confirmation.html', 
+							recipient_name=recipient_name, 
+							recipient_email=recipient_email,
+							user_email=user_email)
+
+@app.route('/thanks_for_signing')
+def thanks_for_signing():
+	return render_template('thanks_for_signing.html')
+
 @app.errorhandler(404)
 def page_not_found(e):
 	return render_template('404.html'), 404
