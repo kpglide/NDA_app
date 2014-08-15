@@ -112,7 +112,7 @@ def us_states():
 	
 class SignatoryForm(Form):
 	state_choices = us_states()
-	accept = BooleanField('I Accept')
+	accept = BooleanField('I Accept', validators=[Required()])
 	company_name = TextField('Company Name (Full Legal Entity Name)', validators=[Required()])
 	signatory_name = TextField('Your Name', validators=[Required()])
 	signatory_title = TextField('Your Title', validators=[Required()])
@@ -145,7 +145,7 @@ def create_nda():
 	if form.validate_on_submit():
 		session['recipient first name'] = form.firstname.data
 		session['recipient last name'] = form.lastname.data
-		session['recipient email'] = form.email.data
+		session['party email'] = form.email.data
 		return redirect(url_for('nda_preview'))
 	else:
 		return render_template('create_nda.html', form=form)
@@ -160,7 +160,14 @@ def nda(user_email):
 	signatory_email = form.email.data
 	user_email = user_email
 	signatory_name = form.signatory_name.data
-	if form.validate_on_submit():
+	if form.validate_on_submit():		
+		party = NDA_Party(form.signatory_name.data, form.signatory_tite.data,
+							form.email.data, form.company_address.data,
+							form.city.data, form.state.data, form.zip.data)
+		#TODO: Use Flask-Moment to record click-through date
+		#here as the NDA signature date
+		db.session.add(party)
+		session['party_email'] = form.email.data
 		send_nda_email(signatory_email, 
 						'Signed NDA from ' + signatory_name, 
 						'mail/signed_nda', signatory_name=signatory_name, 
@@ -216,7 +223,7 @@ def nda_send_confirmation():
 
 @app.route('/thanks_for_signing')
 def thanks_for_signing():
-	return render_template('thanks_for_signing.html')
+	return render_template('thanks_for_signing.html', party_email = session.get('party email'))
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -235,7 +242,25 @@ class User(db.Model):
 	
 	def __repr__(self):
 		return '<User %r>' % self.email
-
+		
+class NDA_Party(db.Model):
+	__tablename__ = 'nda_parties'
+	id = db.Column(db.Integer, primary_key=True)
+	signatory_name = db.Column(db.String(200))
+	signatory_title = db.Column(db.String(200))
+	email = db.Column(db.String(120), unique=True)
+	company_name = db.Column(db.String(200))
+	company_address = db.Column(db.String(250))
+	city = db.Column(db.String(100))
+	state = db.Column(db.String(64))
+	zip = db.Column(db.String(10)) 
+	
+	def __init__(self, *args, **kwargs):
+		Form.__init__(self, *args, **kwargs)
+	
+	def __repr__(self):
+		return '<User %r>' % self.signatory_name
+	
 #Adds shell context to manager
 def make_shell_context():
 	return dict(app=app, db=db, User=User)
