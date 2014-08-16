@@ -1,1 +1,22 @@
-<p>You've signed an NDA</p>
+<div class="message">
+	<p>Dear {{ signatory_name }}</p>
+	<p>This message confirms that you have agreed to a Non-Disclosure Agreement with TSports.  Below is a copy of the Non-Disclosure Agreement.</p>
+    <p>Thank you,</p>
+    <p>The TSports Team</p>
+
+<div class="message">
+	<h2>Signing Party</h2>
+		<ul>
+			<li>Company Name: {{ company_name }}</li>
+			<li>Your Name: {{ signatory_name }}</li>
+			<li>Title: {{signatory_title }}</li>
+		</ul>
+</div>
+
+<div>
+    <h1 class="nda">TSports Non-Disclosure Agreement</h1>
+	<div class="nda">
+	{% for para in paragraphs %}
+		<p>{{ para }}</p>
+	{% endfor %}
+</div>

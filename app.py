@@ -112,7 +112,12 @@ def us_states():
 	
 class SignatoryForm(Form):
 	state_choices = us_states()
-	accept = BooleanField('I Accept', validators=[Required()])
+	#TODO--NEED TO FIX CSS HERE SO THAT AN ERROR MESSAGE APPEARS WHEN
+	#THIS BOX IS NOT CHECKED
+	accept = BooleanField('''I am an authorized signatory of the company indicated below.  
+							I agree to the terms of the Non-Disclosure Agreement above on 
+							behalf of my company.''',
+							validators=[Required()])
 	company_name = TextField('Company Name (Full Legal Entity Name)', validators=[Required()])
 	signatory_name = TextField('Your Name', validators=[Required()])
 	signatory_title = TextField('Your Title', validators=[Required()])
@@ -120,15 +125,15 @@ class SignatoryForm(Form):
 	company_address = TextField('Company Street Address', validators=[Required()])
 	city = TextField('City', validators=[Required()])
 	state = SelectField('State', choices=state_choices, validators=[Required()])
-	zip = TextField('Zip or Postal Code', validators=[Required(), Regexp(u'^(\d{5}(-\d{4})?)$')])
-	submit = SubmitField('I Accept') 
+	zip_code = TextField('Zip or Postal Code', validators=[Required(), Regexp(u'^(\d{5}(-\d{4})?)$')])
+	submit = SubmitField('I Agree') 
 	
 #Routes
 @app.route('/', methods=['GET', 'POST'])
 def login():
 	form = LoginForm()
 	if form.validate_on_submit():
-		if (form.email.data == 'test@mail.com') and (form.password.data == 'testtest'):
+		if form.password.data == 'testtest':
 			session['email'] = form.email.data
 			return redirect(url_for('home'))
 		else:
@@ -157,21 +162,21 @@ def nda(user_email):
 	paragraphs = data.split("\n\n")
 	f.close()
 	form = SignatoryForm()
-	signatory_email = form.email.data
 	user_email = user_email
-	signatory_name = form.signatory_name.data
 	if form.validate_on_submit():		
-		party = NDA_Party(form.signatory_name.data, form.signatory_tite.data,
-							form.email.data, form.company_address.data,
-							form.city.data, form.state.data, form.zip.data)
+		party = NDA_Party(form.signatory_name.data, form.signatory_title.data,
+							form.email.data, form.company_name.data, form.company_address.data,
+							form.city.data, form.state.data, form.zip_code.data)
 		#TODO: Use Flask-Moment to record click-through date
 		#here as the NDA signature date
 		db.session.add(party)
-		session['party_email'] = form.email.data
-		send_nda_email(signatory_email, 
-						'Signed NDA from ' + signatory_name, 
-						'mail/signed_nda', signatory_name=signatory_name, 
-						user_email=user_email) 
+		send_nda_email([party.email], [user_email], 
+						'Signed NDA for ' + party.signatory_name + '//' +
+						party.company_name, 
+						'mail/signed_nda', signatory_name=party.signatory_name, 
+						user_email=user_email, company_name=party.company_name, 
+						signatory_title=party.signatory_title, paragraphs=paragraphs,
+						) 
 		return redirect(url_for('thanks_for_signing'))
 	return render_template('nda.html', user_email=user_email, paragraphs=paragraphs, form=form)
 	
@@ -181,7 +186,7 @@ def nda_preview():
 	recipient_first_name = session.get('recipient first name')
 	recipient_last_name = session.get('recipient last name')
 	recipient_name = recipient_first_name + ' ' + recipient_last_name
-	recipient_email = session.get('recipient email')
+	recipient_email = session.get('party email')
 	return render_template('nda_preview.html', 
 							recipient_name = recipient_name,
 							recipient_email = recipient_email,
@@ -189,8 +194,8 @@ def nda_preview():
 							)
 							
 #Emails copy of blank NDA to recipient.  Also sends a copy to the app user. 
-def send_nda_email(to, subject, template, **kwargs):
-	msg = Message(subject, sender=app.config['MAIL_SENDER'], recipients=[to])
+def send_nda_email(to, copy, subject, template, **kwargs):
+	msg = Message(subject, sender=app.config['MAIL_SENDER'], recipients=to, cc=copy)
 	msg.body = render_template(template + '.txt', **kwargs)
 	msg.html = render_template(template + '.html', **kwargs)
 	mail.send(msg)
@@ -201,11 +206,10 @@ def nda_confirmation(user_email):
 	recipient_first_name = session.get('recipient first name')
 	recipient_last_name = session.get('recipient last name')
 	recipient_name = recipient_first_name + ' ' + recipient_last_name
-	recipient_email = session.get('recipient email')
+	recipient_email = session.get('party email')
 	
-	send_nda_email(recipient_email, 'TSports NDA for Signature', 'mail/nda_email',
-					 recipient_name=recipient_name, 
-					 user_email=user_email) 
+	send_nda_email([recipient_email], [user_email], 'TSports NDA for Signature', 'mail/nda_email', 
+					recipient_name=recipient_name, user_email=user_email) 
 	
 	return redirect(url_for('nda_send_confirmation'))
 	
@@ -215,7 +219,7 @@ def nda_send_confirmation():
 	recipient_first_name = session.get('recipient first name')
 	recipient_last_name = session.get('recipient last name')
 	recipient_name = recipient_first_name + ' ' + recipient_last_name
-	recipient_email = session.get('recipient email')
+	recipient_email = session.get('party email')
 	return render_template('nda_send_confirmation.html', 
 							recipient_name=recipient_name, 
 							recipient_email=recipient_email,
@@ -253,10 +257,20 @@ class NDA_Party(db.Model):
 	company_address = db.Column(db.String(250))
 	city = db.Column(db.String(100))
 	state = db.Column(db.String(64))
-	zip = db.Column(db.String(10)) 
+	zip_code = db.Column(db.String(10)) 
 	
-	def __init__(self, *args, **kwargs):
-		Form.__init__(self, *args, **kwargs)
+	def __init__(self, signatory_name, signatory_title, email,
+				company_name, company_address, city, state,
+				zip_code):
+
+		self.signatory_name = signatory_name
+		self.signatory_title = signatory_title
+		self.email = email
+		self.company_name = company_name
+		self.company_address = company_address
+		self.city = city
+		self.state = state
+		self.zip_code = zip_code
 	
 	def __repr__(self):
 		return '<User %r>' % self.signatory_name
