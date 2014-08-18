@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block navbar %}{% endblock navbar %}
+
+{%- block styles %}
+	<!-- Bootstrap -->
+	<link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet" media="screen">
+	<link href="../static/nda.css" rel="stylesheet">
+{% endblock styles %}
+	
+{% block page_content %}
+
+	<h1 class="nda">TSports Non-Disclosure Agreement</h1>
+	<div class="nda">
+	{% for para in paragraphs %}
+		<p>{{ para }}</p>
+	{% endfor %}
+	</div>
+	
+	<div class="nda">
+		
+		<div class="form-group" role="form" method="post">
+			{% import "bootstrap/wtf.html" as wtf %}
+			{{ wtf.quick_form(form) }}
+		</div>
+    </div> <!-- /container -->
+	
+{% endblock page_content %}

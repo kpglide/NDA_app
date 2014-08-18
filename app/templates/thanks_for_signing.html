@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block navbar %}<p></p>{% endblock navbar %}
+
+{%- block styles %}
+	<!-- Bootstrap -->
+	<link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet" media="screen">
+{% endblock styles %}
+	
+{% block page_content %}
+
+	<div class="container">
+		<div class ="jumbotron">
+			<h2 class="text-center">Thanks!</h2>
+				<p>You have signed the NDA.  A copy of the NDA and a note confirming that you have signed
+				it will be sent to you at {{ party_email }}</p>
+		</div>
+    </div> <!-- /container -->
+	
+{% endblock page_content %}

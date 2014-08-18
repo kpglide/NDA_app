@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+	   <div class="jumbotron">
+		    <h1>Hello.</h1>
+        <p class="lead">How can we help you?  Please select from the options below.</p>
+      </div>
+	   
+	   <div class="row marketing">
+        <div class="col-lg-6">
+          <h4><a href="{{ url_for('main.create_nda') }}">Create a NDA</a></h4>
+            <p>Create a new NDA and send it to another party for signature.</p>
+        </div>
+    </div>
+{% endblock %}
