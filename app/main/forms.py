@@ -1,8 +1,9 @@
 from flask.ext.wtf import Form
 from wtforms import TextField, PasswordField, SubmitField, BooleanField,\
 	SelectField
-from wtforms.validators import Required, Email, Length, Regexp
+from wtforms.validators import Required, Email, Length, Regexp, InputRequired
 from ..models import User, NDA_Party
+
 
 #List of tuples containing abbreviation / full-name pairs for the US states
 def us_states():
@@ -90,7 +91,7 @@ class SignatoryForm(Form):
 	accept = BooleanField('''I am an authorized signatory of the company indicated below.  
 							I agree to the terms of the Non-Disclosure Agreement above on 
 							behalf of my company.''',
-							validators=[Required()])
+							validators=[InputRequired("Please check")])
 	company_name = TextField('Company Name (Full Legal Entity Name)', validators=[Required()])
 	signatory_name = TextField('Your Name', validators=[Required()])
 	signatory_title = TextField('Your Title', validators=[Required()])

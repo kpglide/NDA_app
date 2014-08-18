@@ -4,6 +4,7 @@ import os
 from .forms import LoginForm, RecipientForm, SignatoryForm
 from .. import db
 from ..models import User, NDA_Party
+from ..email import send_nda_email
 
 #Routes
 @main.route('/', methods=['GET', 'POST'])
