@@ -57,7 +57,7 @@ def nda(user_email):
 						signatory_title=party.signatory_title, paragraphs=paragraphs,
 						) 
 		return redirect(url_for('.thanks_for_signing'))
-	if request.form.get("accept") != "y":
+	if request.method == 'POST' and request.form.get("accept") != "y":
 		error = "You must check the box indicating you accept the terms of the NDA."
 	return render_template('nda.html', user_email=user_email, paragraphs=paragraphs,
 							form=form, error=error)
