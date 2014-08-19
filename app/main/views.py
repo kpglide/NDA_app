@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for
+from flask import render_template, session, request, redirect, url_for, flash
 from . import main
 import os
 from .forms import LoginForm, RecipientForm, SignatoryForm
@@ -35,13 +35,14 @@ def create_nda():
 
 @main.route('/nda/<user_email>', methods=['GET', 'POST'])
 def nda(user_email):
+	error = None
 	f = open('app/static/Very Short NDA.txt', 'r')
 	data = f.read().decode('utf-8') 
 	paragraphs = data.split("\n\n")
 	f.close()
 	form = SignatoryForm()
 	user_email = user_email
-	if form.validate_on_submit():		
+	if form.validate_on_submit() and (request.form.get("accept") == "y"):		
 		party = NDA_Party(form.signatory_name.data, form.signatory_title.data,
 							form.email.data, form.company_name.data, form.company_address.data,
 							form.city.data, form.state.data, form.zip_code.data)
@@ -56,7 +57,10 @@ def nda(user_email):
 						signatory_title=party.signatory_title, paragraphs=paragraphs,
 						) 
 		return redirect(url_for('.thanks_for_signing'))
-	return render_template('nda.html', user_email=user_email, paragraphs=paragraphs, form=form)
+	if request.form.get("accept") != "y":
+		error = "You must check the box indicating you accept the terms of the NDA."
+	return render_template('nda.html', user_email=user_email, paragraphs=paragraphs,
+							form=form, error=error)
 	
 @main.route('/nda_preview')
 def nda_preview():

@@ -19,6 +19,9 @@
 	<div class="nda">
 		
 		<div class="form-group" role="form" method="post">
+			{% if error %}
+				<p class="error"><strong>**{{ error }}**</strong></p>
+			{% endif %}
 			{% import "bootstrap/wtf.html" as wtf %}
 			{{ wtf.quick_form(form) }}
 		</div>
