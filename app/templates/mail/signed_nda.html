@@ -1,3 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="../../static/thanks_for_signing.css">
+</head>
+
+<body>
+
 <div class="message">
 	<p>Dear {{ signatory_name }}</p>
 	<p>This message confirms that you have agreed to a Non-Disclosure Agreement with TSports.  Below is a copy of the Non-Disclosure Agreement.</p>
@@ -5,6 +17,7 @@
     <p>The TSports Team</p>
 
 <div class="message">
+	<h3>-------------------------------------------------------------------</h3>
 	<h2>Signed By</h2>
 		<ul>
 			<li>Company Name: {{ company_name }}</li>
@@ -14,9 +27,13 @@
 </div>
 
 <div>
-    <h1 class="nda">TSports Non-Disclosure Agreement</h1>
+	<h3>-------------------------------------------------------------------</h3>
+    <h2 class="nda">TSports Non-Disclosure Agreement</h2>
 	<div class="nda">
 	{% for para in paragraphs %}
 		<p>{{ para }}</p>
 	{% endfor %}
 </div>
+
+</body>
+</html>
