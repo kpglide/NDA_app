@@ -18,10 +18,10 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
 @manager.command
-	def deploy():
+def deploy():
 	"""Run deployment tasks."""
 	from flask.ext.migrate import upgrade
-	from app.models import Role, User
+	from app.models import User, NDA_Party
 	# migrate database to latest revision
 	upgrade()
 
