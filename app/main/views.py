@@ -63,6 +63,7 @@ def nda(user_email):
 							form.city.data, form.state.data, form.zip_code.data)
 		#TODO: Use Flask-Moment to record click-through date
 		#here as the NDA signature date
+		#TODO:  Create unique record in the database each time NDA is signed
 		db.session.add(party)
 		session['party email'] = party.email
 		send_nda_email([party.email], [user_email], 
