@@ -9,6 +9,8 @@ from ..email import send_nda_email
 #Routes
 @main.route('/', methods=['GET', 'POST'])
 def login():
+	#TODO:  Fix other views so that they're not accessible unless user is logged in
+	#TODO:  Add logout link
 	form = LoginForm()
 	if form.validate_on_submit():
 		if form.password.data == 'testtest':
@@ -33,6 +35,19 @@ def create_nda():
 	else:
 		return render_template('create_nda.html', form=form)
 
+@main.route('/nda_preview')
+def nda_preview():
+	user_email = session.get('email')
+	recipient_first_name = session.get('recipient first name')
+	recipient_last_name = session.get('recipient last name')
+	recipient_name = recipient_first_name + ' ' + recipient_last_name
+	recipient_email = session.get('party email')
+	return render_template('nda_preview.html', 
+							recipient_name = recipient_name,
+							recipient_email = recipient_email,
+							user_email = user_email
+							)
+
 @main.route('/nda/<user_email>', methods=['GET', 'POST'])
 def nda(user_email):
 	error = None
@@ -49,6 +64,7 @@ def nda(user_email):
 		#TODO: Use Flask-Moment to record click-through date
 		#here as the NDA signature date
 		db.session.add(party)
+		session['party email'] = party.email
 		send_nda_email([party.email], [user_email], 
 						'Signed NDA for ' + party.signatory_name + '//' +
 						party.company_name, 
@@ -61,20 +77,7 @@ def nda(user_email):
 		error = "You must check the box indicating you accept the terms of the NDA."
 	return render_template('nda.html', user_email=user_email, paragraphs=paragraphs,
 							form=form, error=error)
-	
-@main.route('/nda_preview')
-def nda_preview():
-	user_email = session.get('email')
-	recipient_first_name = session.get('recipient first name')
-	recipient_last_name = session.get('recipient last name')
-	recipient_name = recipient_first_name + ' ' + recipient_last_name
-	recipient_email = session.get('party email')
-	return render_template('nda_preview.html', 
-							recipient_name = recipient_name,
-							recipient_email = recipient_email,
-							user_email = user_email
-							)
-							
+								
 @main.route('/nda_confirmation/<user_email>')
 def nda_confirmation(user_email):
 	user_email = user_email
